@@ -163,15 +163,120 @@ p {
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  padding-top: 12px;
+  padding-bottom: 32px;
 }
+
+/* MovieCard */
 
 .movie-card {
   min-width: 220px;
-  height: 130px;
+  height: 380px;
   border-radius: 16px;
-  background: rgba(180, 151, 255, 0.18);
+  background: #171720;
+  border: 1px solid rgba(245, 241, 232, 0.12);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(180, 151, 255, 0.65);
+  box-shadow: 0 18px 40px rgba(180, 151, 255, 0.18);
+  z-index: 10;
+}
+
+.movie-card__image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.movie-card__title {
+  font-size: 1rem;
+  margin: 12px 12px 4px;
+  color: #f5f1e8;
+}
+
+.movie-card__year {
+  font-size: 0.9rem;
+  margin: 0 12px 12px;
+  color: #b497ff;
+}
+
+/* Modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 20, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.modal__content {
+  width: 90%;
+  max-width: 900px;
+  background: #171720;
+  color: #f5f1e8;
+  border: 1px solid rgba(180, 151, 255, 0.45);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+}
+
+.modal__body {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.modal__poster {
+  width: 220px;
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.modal__details {
+  flex: 1;
+  text-align: left;
+}
+
+.modal__details h2 {
+  margin-bottom: 12px;
+  color: #b497ff;
+}
+
+.modal__rating,
+.modal__release {
+  margin-bottom: 8px;
+}
+
+.modal__overview {
+  margin-top: 20px;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .modal__body {
+    flex-direction: column;
+  }
+
+  .modal__poster {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
 }
