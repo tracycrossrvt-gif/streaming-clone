@@ -3,38 +3,100 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import MovieRow from "./components/MovieRow";
-import { getTrendingMovies } from "./services/tmdb";
+import { getTrendingMovies, getPopularMovies, getTopRatedMovies, searchMovies, } from "./services/tmdb";
 
 function App() {
   const [featuredMovie, setFeaturedMovie] = useState(null);
 
+  const [trendingMovies, setTrendingMovies] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
+
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
   useEffect(() => {
-    async function loadFeaturedMovie() {
-      const movies = await getTrendingMovies();
+  async function loadMovies() {
+    const trending = await getTrendingMovies();
+    const popular = await getPopularMovies();
+    const topRated = await getTopRatedMovies();
 
-      const randomIndex = Math.floor(
-  Math.random() * movies.length
-);
+    setTrendingMovies(trending);
+    setPopularMovies(popular);
+    setTopRatedMovies(topRated);
 
-setFeaturedMovie(movies[randomIndex]);
-    }
+    const randomIndex = Math.floor(
+      Math.random() * trending.length
+    );
 
-    loadFeaturedMovie();
-  }, []);
+    setFeaturedMovie(trending[randomIndex]);
+  }
 
-  console.log("selectedMovie:", selectedMovie);
+  loadMovies();
+}, []);
+
+ 
+async function handleSearch(event) {
+  event.preventDefault();
+console.log("search submitted:", searchQuery);
+
+  if (!searchQuery.trim()) {
+    setSearchResults([]);
+    return;
+  }
+
+  const results = await searchMovies(searchQuery);
+
+  setSearchResults(results);
+}
+
+
 return (
   <div className="app">
-    <Navbar />
+    <Navbar
+  searchQuery={searchQuery}
+  setSearchQuery={setSearchQuery}
+  handleSearch={handleSearch}
+/>
     <Hero movie={featuredMovie} />
 
-    <MovieRow onMovieSelect={setSelectedMovie} />
+    {searchResults.length > 0 && (
+  <MovieRow
+    title={`Search Results for "${searchQuery}"`}
+    movies={searchResults}
+    onMovieSelect={setSelectedMovie}
+  />
+)}
+
+  <MovieRow
+  title="Trending"
+  movies={trendingMovies}
+  onMovieSelect={setSelectedMovie}
+/>
+
+<MovieRow
+  title="Popular"
+  movies={popularMovies}
+  onMovieSelect={setSelectedMovie}
+/>
+
+<MovieRow
+  title="Top Rated"
+  movies={topRatedMovies}
+  onMovieSelect={setSelectedMovie}
+/>
 
     {selectedMovie && (
-  <div className="modal">
-    <div className="modal__content">
+  <div
+  className="modal"
+  onClick={() => setSelectedMovie(null)}
+>
+   <div
+  className="modal__content"
+  onClick={(event) => event.stopPropagation()}
+>
       <button
         className="modal__close"
         onClick={() => setSelectedMovie(null)}

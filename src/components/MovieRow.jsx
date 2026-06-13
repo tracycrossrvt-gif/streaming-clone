@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
+
 import MovieCard from "./MovieCard";
-import { getTrendingMovies } from "../services/tmdb";
 
-function MovieRow({ onMovieSelect }) {
- const [movies, setMovies] = useState([]);
-useEffect(() => {
-  async function loadMovies() {
-    const movieData = await getTrendingMovies();
 
-    console.log(movieData);
+function MovieRow({ title, movies, onMovieSelect }) {
 
-    setMovies(movieData);
-  }
-
-  loadMovies();
-}, []);
 
   return (
     <section className="movie-row">
    
-      <h2 className="movie-row__title">Folk Horror Favorites</h2>
+      <h2 className="movie-row__title">{title}</h2>
 
       <div className="movie-row__list">
         {movies.map((movie) => {

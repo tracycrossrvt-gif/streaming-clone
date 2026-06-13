@@ -1,6 +1,6 @@
 import logo from "../assets/mothman-logo-main.png";
 
-function Navbar() {
+function Navbar({ searchQuery, setSearchQuery, handleSearch, }) {
   return (
     <nav className="navbar">
       <div className="navbar__brand">
@@ -12,7 +12,16 @@ function Navbar() {
 
         <h2 className="navbar__logo">NOCTURNE</h2>
       </div>
-
+    <form className="navbar__search"
+    onSubmit={handleSearch}>
+  <input
+    type="text"
+    placeholder="Search Nocturne..."
+    className="navbar__search-input"
+    value={searchQuery}
+    onChange={(event) => setSearchQuery(event.target.value)}
+  />
+</form>
       <ul className="navbar__links">
         <li>Home</li>
         <li>Movies</li>
