@@ -19,7 +19,6 @@ function MovieRow({ title, movies, onMovieSelect }) {
   year={movie.release_date?.slice(0, 4)}
   poster={movie.poster_path}
   onClick={() => {
-    console.log("clicked movie:", movie.title);
     onMovieSelect(movie);
   }}
 /> 

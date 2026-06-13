@@ -1,6 +1,11 @@
 import logo from "../assets/mothman-logo-main.png";
 
-function Navbar({ searchQuery, setSearchQuery, handleSearch, }) {
+function Navbar({ 
+   searchQuery,
+   setSearchQuery, 
+   handleSearch,
+   favoriteCount,
+  }) {
   return (
     <nav className="navbar">
       <div className="navbar__brand">
@@ -26,7 +31,11 @@ function Navbar({ searchQuery, setSearchQuery, handleSearch, }) {
         <li>Home</li>
         <li>Movies</li>
         <li>Series</li>
-        <li>My List</li>
+        <li>
+  {favoriteCount > 0
+    ? `My List (${favoriteCount})`
+    : "My List"}
+</li>
       </ul>
     </nav>
   );
