@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -25,9 +25,13 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+
+  const searchResultsRef = useRef(null);
+
   const [favorites, setFavorites] = useState(() => {
   const savedFavorites = localStorage.getItem("nocturneFavorites");
-  
+
+
   if (savedFavorites) {
     return JSON.parse(savedFavorites);
   }
@@ -73,6 +77,12 @@ async function handleSearch(event) {
   const results = await searchMovies(searchQuery);
 
   setSearchResults(results);
+
+  setTimeout(() => {
+  searchResultsRef.current?.scrollIntoView({
+    behavior: "smooth",
+  });
+}, 100);
 }
 
 
@@ -144,7 +154,9 @@ return (
   handleSearch={handleSearch}
   favoriteCount={favorites.length}
 />
-    <Hero movie={featuredMovie} />
+
+<Hero movie={featuredMovie} />
+
   {favorites.length > 0 && (
   <MovieRow
     title="My List"
@@ -152,8 +164,8 @@ return (
     onMovieSelect={openMovie}
   />
 )}
-   
-    {hasSearched && (
+
+{hasSearched && (
   <button className="search-clear-btn" onClick={clearSearch}>
     ✕ Clear Search
   </button>
@@ -166,12 +178,13 @@ return (
 )}
 
 {searchResults.length > 0 && (
-  <button
-    className="search-clear-btn"
-    onClick={clearSearch}
-  >
-    ✕ Clear Search
-  </button>
+  <div ref={searchResultsRef}>
+    <MovieRow
+      title={`Search Results for "${searchQuery}"`}
+      movies={searchResults}
+      onMovieSelect={openMovie}
+    />
+  </div>
 )}
 
   <MovieRow
@@ -189,7 +202,7 @@ return (
 <MovieRow
   title="Top Rated"
   movies={topRatedMovies}
-  onMovieSelect={setSelectedMovie}
+  onMovieSelect={openMovie}
 />
 
     {selectedMovie && (
