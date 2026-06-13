@@ -51,3 +51,13 @@ export async function getMovieVideos(movieId) {
 
   return data.results;
 }
+
+export async function getMovieDetails(movieId) {
+  const response = await fetch(
+    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data;
+}

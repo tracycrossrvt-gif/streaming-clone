@@ -9,6 +9,7 @@ import {
   getTopRatedMovies, 
   searchMovies,
   getMovieVideos,
+  getMovieDetails,
 } from "./services/tmdb";
 
 function App() {
@@ -18,10 +19,12 @@ function App() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
 
+  const [movieDetails, setMovieDetails] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const [favorites, setFavorites] = useState(() => {
   const savedFavorites = localStorage.getItem("nocturneFavorites");
   
@@ -59,6 +62,7 @@ useEffect(() => {
 async function handleSearch(event) {
   event.preventDefault();
 
+  setHasSearched(true);
 
   if (!searchQuery.trim()) {
     setSearchResults([]);
@@ -117,9 +121,19 @@ function closeModal() {
   setTrailerKey(null);
 }
 
-function openMovie(movie) {
+async function openMovie(movie) {
   setSelectedMovie(movie);
   setTrailerKey(null);
+
+  const details = await getMovieDetails(movie.id);
+
+  setMovieDetails(details);
+}
+
+function clearSearch() {
+  setSearchQuery("");
+  setSearchResults([]);
+  setHasSearched(false);
 }
 
 return (
@@ -138,12 +152,26 @@ return (
     onMovieSelect={openMovie}
   />
 )}
-    {searchResults.length > 0 && (
-  <MovieRow
-    title={`Search Results for "${searchQuery}"`}
-    movies={searchResults}
-    onMovieSelect={openMovie}
-  />
+   
+    {hasSearched && (
+  <button className="search-clear-btn" onClick={clearSearch}>
+    ✕ Clear Search
+  </button>
+)}
+
+{hasSearched && searchResults.length === 0 && (
+  <p className="search-empty">
+    No results found for "{searchQuery}"
+  </p>
+)}
+
+{searchResults.length > 0 && (
+  <button
+    className="search-clear-btn"
+    onClick={clearSearch}
+  >
+    ✕ Clear Search
+  </button>
 )}
 
   <MovieRow
@@ -155,7 +183,7 @@ return (
 <MovieRow
   title="Popular"
   movies={popularMovies}
-  onMovieSelect={setSelectedMovie}
+  onMovieSelect={openMovie}
 />
 
 <MovieRow
@@ -180,6 +208,15 @@ return (
         ×
       </button>
 
+       {selectedMovie.backdrop_path && (
+  <div
+    className="modal__backdrop"
+    style={{
+      backgroundImage: `linear-gradient(to bottom, rgba(15, 15, 20, 0.25), #171720), url(https://image.tmdb.org/t/p/original${selectedMovie.backdrop_path})`,
+    }}
+  />
+)} 
+
       <div className="modal__body">
         <img
           src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
@@ -190,6 +227,12 @@ return (
         <div className="modal__details">
           <h2>{selectedMovie.title}</h2>
 
+         {movieDetails?.tagline && (
+  <p className="modal__tagline">
+    “{movieDetails.tagline}”
+  </p>
+)} 
+
         {trailerKey && (
   <div className="modal__trailer">
     <iframe
@@ -199,35 +242,50 @@ return (
     ></iframe>
   </div>
 )}
-         <button
-  className="modal__favorite-btn"
-  onClick={() => {
-    if (isFavorite(selectedMovie)) {
-      removeFromFavorites(selectedMovie);
-    } else {
-      addToFavorites(selectedMovie);
-    }
-  }}
->
-  {isFavorite(selectedMovie)
-    ? "☽ In My List"
-    : "☽ Add to My List"}
-</button>
-<button
-  className="modal__trailer-btn"
-  onClick={() => handleWatchTrailer(selectedMovie)}
->
-  ▶ Watch Trailer
-</button> 
+    <div className="modal__actions">
+  <button
+    className="modal__favorite-btn"
+    onClick={() => {
+      if (isFavorite(selectedMovie)) {
+        removeFromFavorites(selectedMovie);
+      } else {
+        addToFavorites(selectedMovie);
+      }
+    }}
+  >
+    {isFavorite(selectedMovie) ? "☽ In My List" : "☽ Add to My List"}
+  </button>
 
-          <p className="modal__rating">
-            ⭐ {selectedMovie.vote_average.toFixed(1)}
-          </p>
+  <button
+    className="modal__trailer-btn"
+    onClick={() => handleWatchTrailer(selectedMovie)}
+  >
+    ▶ Watch Trailer
+  </button>
+</div>     
 
-          <p className="modal__release">
-            Released: {selectedMovie.release_date}
-          </p>
+    <div className="modal__meta">
+  <span>⭐ {selectedMovie.vote_average.toFixed(1)}</span>
 
+  {selectedMovie.release_date && (
+    <span>{selectedMovie.release_date.slice(0, 4)}</span>
+  )}
+
+  {movieDetails?.runtime && (
+    <span>{movieDetails.runtime} min</span>
+  )}
+</div>
+
+
+  {movieDetails?.genres && (
+  <div className="modal__genres">
+    {movieDetails.genres.map((genre) => (
+      <span key={genre.id} className="modal__genre">
+        {genre.name}
+      </span>
+    ))}
+  </div>
+)}
           <p className="modal__overview">
             {selectedMovie.overview}
           </p>
