@@ -4,6 +4,13 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import MovieRow from "./components/MovieRow";
 import { 
+  getTrendingHorrorMovies,
+  getTopRatedHorrorMovies,
+  getPopularHorrorMovies,
+  getPsychologicalHorrorMovies,
+  getOccultHorrorMovies,
+  getCreatureFeatureMovies,
+  getFoundFootageMovies,
   getTrendingMovies,
   getPopularMovies, 
   getTopRatedMovies, 
@@ -18,6 +25,10 @@ function App() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [psychologicalMovies, setPsychologicalMovies] = useState([]);
+  const [occultMovies, setOccultMovies] = useState([]);
+  const [creatureMovies, setCreatureMovies] = useState([]);
+  const [foundFootageMovies, setFoundFootageMovies] = useState([]);
 
   const [movieDetails, setMovieDetails] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -43,15 +54,24 @@ function App() {
   return [];
 });
 
-  useEffect(() => {
+ useEffect(() => {
   async function loadMovies() {
-    const trending = await getTrendingMovies();
-    const popular = await getPopularMovies();
-    const topRated = await getTopRatedMovies();
-
+    const trending = await getTrendingHorrorMovies();
+    const popular = await getPopularHorrorMovies();
+    const topRated = await getTopRatedHorrorMovies();
+    const psychological = await getPsychologicalHorrorMovies();
+    const occult = await getOccultHorrorMovies();
+    const creatures = await getCreatureFeatureMovies();
+    const foundFootage = await getFoundFootageMovies();
+    
+  
     setTrendingMovies(trending);
     setPopularMovies(popular);
     setTopRatedMovies(topRated);
+    setPsychologicalMovies(psychological);
+    setOccultMovies(occult);
+    setCreatureMovies(creatures);
+    setFoundFootageMovies(foundFootage);
 
     const randomIndex = Math.floor(
       Math.random() * trending.length
@@ -61,7 +81,7 @@ function App() {
   }
 
   loadMovies();
-}, []);
+}, []); 
 
 useEffect(() => {
   localStorage.setItem("nocturneFavorites", JSON.stringify(favorites));
@@ -223,19 +243,43 @@ return (
 )}
 
   <MovieRow
-  title="Trending"
+  title="Trending Horror"
   movies={trendingMovies}
   onMovieSelect={openMovie}
 />
 
 <MovieRow
-  title="Popular"
+  title="Psychological Horror"
+  movies={psychologicalMovies}
+  onMovieSelect={openMovie}
+/>
+
+<MovieRow
+  title="Creature Features"
+  movies={creatureMovies}
+  onMovieSelect={openMovie}
+/>
+
+<MovieRow
+  title="Found Footage"
+  movies={foundFootageMovies}
+  onMovieSelect={openMovie}
+/>
+
+<MovieRow
+  title="Occult & Witchcraft"
+  movies={occultMovies}
+  onMovieSelect={openMovie}
+/>
+
+<MovieRow
+  title="Popular Horror"
   movies={popularMovies}
   onMovieSelect={openMovie}
 />
 
 <MovieRow
-  title="Top Rated"
+  title="Top Rated Horror"
   movies={topRatedMovies}
   onMovieSelect={openMovie}
 />
