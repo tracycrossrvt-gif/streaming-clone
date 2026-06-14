@@ -22,12 +22,16 @@ function App() {
   const [movieDetails, setMovieDetails] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
+  const [isMovieLoading, setIsMovieLoading] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
 
   const searchResultsRef = useRef(null);
-
+  const [isSearching, setIsSearching] = useState(false);
+  const [isTrailerLoading, setIsTrailerLoading] = useState(false);
+  const [trailerError, setTrailerError] = useState("");
   const [favorites, setFavorites] = useState(() => {
   const savedFavorites = localStorage.getItem("nocturneFavorites");
 
@@ -70,19 +74,23 @@ async function handleSearch(event) {
 
   if (!searchQuery.trim()) {
     setSearchResults([]);
-
+    setIsSearching(false);
     return;
   }
 
+  setIsSearching(true);
+  
   const results = await searchMovies(searchQuery);
 
   setSearchResults(results);
+  setIsSearching(false);
+  
 
   setTimeout(() => {
-  searchResultsRef.current?.scrollIntoView({
-    behavior: "smooth",
-  });
-}, 100);
+    searchResultsRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, 100);
 }
 
 
@@ -113,6 +121,9 @@ function isFavorite(movie) {
 }
 
 async function handleWatchTrailer(movie) {
+  setTrailerError("");
+  setIsTrailerLoading(true);
+
   const videos = await getMovieVideos(movie.id);
 
   const trailer = videos.find(
@@ -123,7 +134,16 @@ async function handleWatchTrailer(movie) {
 
   if (trailer) {
     setTrailerKey(trailer.key);
+  } else {
+    setTrailerError("No trailer available.");
   }
+  setIsTrailerLoading(false);
+}
+
+async function watchMovie(movie) {
+  setIsMovieLoading(true);
+  await openMovie(movie);
+  await handleWatchTrailer(movie);
 }
 
 function closeModal() {
@@ -135,9 +155,14 @@ async function openMovie(movie) {
   setSelectedMovie(movie);
   setTrailerKey(null);
 
-  const details = await getMovieDetails(movie.id);
+  setIsMovieLoading(true);
+
+  try {const details = await getMovieDetails(movie.id);
 
   setMovieDetails(details);
+  } finally {
+  setIsMovieLoading(false);
+}
 }
 
 function clearSearch() {
@@ -155,7 +180,11 @@ return (
   favoriteCount={favorites.length}
 />
 
-<Hero movie={featuredMovie} />
+<Hero
+  movie={featuredMovie}
+  onMoreInfo={openMovie}
+  onWatchTrailer={watchMovie}
+/>
 
   {favorites.length > 0 && (
   <MovieRow
@@ -185,6 +214,12 @@ return (
       onMovieSelect={openMovie}
     />
   </div>
+)}
+
+{isSearching && (
+  <p className="search-loading">
+    Searching Nocturne...
+  </p>
 )}
 
   <MovieRow
@@ -239,7 +274,11 @@ return (
 
         <div className="modal__details">
           <h2>{selectedMovie.title}</h2>
-
+          {isMovieLoading && (
+  <p className="modal__loading">
+    Summoning forbidden knowledge...
+  </p>
+)}
          {movieDetails?.tagline && (
   <p className="modal__tagline">
     “{movieDetails.tagline}”
@@ -255,6 +294,19 @@ return (
     ></iframe>
   </div>
 )}
+
+{isTrailerLoading && (
+  <p className="modal__trailer-loading">
+    Summoning trailer...
+  </p>
+)}
+
+{trailerError && (
+  <p className="modal__error">
+    {trailerError}
+  </p>
+)}
+
     <div className="modal__actions">
   <button
     className="modal__favorite-btn"

@@ -1,4 +1,4 @@
-function Hero({ movie }) {
+function Hero({ movie, onMoreInfo, onWatchTrailer }) {
   if (!movie) {
     return null;
   }
@@ -18,8 +18,13 @@ function Hero({ movie }) {
         <p className="hero__description">{movie.overview}</p>
 
         <div className="hero__buttons">
-          <button className="hero__button">Watch Now</button>
-          <button className="hero__button hero__button--secondary">
+          <button className="hero__button"
+          onClick={() => onWatchTrailer(movie)}
+          >
+            Watch Now</button>
+          <button className="hero__button hero__button--secondary"
+          onClick={() => onMoreInfo(movie)}
+          >
             More Info
           </button>
         </div>
