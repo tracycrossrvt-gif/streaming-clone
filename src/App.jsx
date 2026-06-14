@@ -1,3 +1,7 @@
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import MyList from "./pages/MyList";
+
 import { useEffect, useState, useRef, } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
@@ -199,6 +203,11 @@ return (
   handleSearch={handleSearch}
   favoriteCount={favorites.length}
 />
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/my-list" element={<MyList />} />
+</Routes>
 
 <Hero
   movie={featuredMovie}
