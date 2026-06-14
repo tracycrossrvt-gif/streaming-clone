@@ -205,93 +205,31 @@ return (
 />
 
 <Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/my-list" element={<MyList />} />
+  <Route
+  path="/"
+  element={
+    <Home
+      featuredMovie={featuredMovie}
+      favorites={favorites}
+      searchResults={searchResults}
+      hasSearched={hasSearched}
+      searchQuery={searchQuery}
+      clearSearch={clearSearch}
+      openMovie={openMovie}
+      trendingMovies={trendingMovies}
+      psychologicalMovies={psychologicalMovies}
+      creatureMovies={creatureMovies}
+      foundFootageMovies={foundFootageMovies}
+      occultMovies={occultMovies}
+      popularMovies={popularMovies}
+      topRatedMovies={topRatedMovies}
+      watchMovie={watchMovie}
+    />
+  }
+/>
+  {/* <Route path="/my-list" element={<MyList />} /> */}
 </Routes>
 
-<Hero
-  movie={featuredMovie}
-  onMoreInfo={openMovie}
-  onWatchTrailer={watchMovie}
-/>
-
-  {favorites.length > 0 && (
-  <MovieRow
-    title="My List"
-    movies={favorites}
-    onMovieSelect={openMovie}
-  />
-)}
-
-{hasSearched && (
-  <button className="search-clear-btn" onClick={clearSearch}>
-    ✕ Clear Search
-  </button>
-)}
-
-{hasSearched && searchResults.length === 0 && (
-  <p className="search-empty">
-    No results found for "{searchQuery}"
-  </p>
-)}
-
-{searchResults.length > 0 && (
-  <div ref={searchResultsRef}>
-    <MovieRow
-      title={`Search Results for "${searchQuery}"`}
-      movies={searchResults}
-      onMovieSelect={openMovie}
-    />
-  </div>
-)}
-
-{isSearching && (
-  <p className="search-loading">
-    Searching Nocturne...
-  </p>
-)}
-
-  <MovieRow
-  title="Trending Horror"
-  movies={trendingMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Psychological Horror"
-  movies={psychologicalMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Creature Features"
-  movies={creatureMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Found Footage"
-  movies={foundFootageMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Occult & Witchcraft"
-  movies={occultMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Popular Horror"
-  movies={popularMovies}
-  onMovieSelect={openMovie}
-/>
-
-<MovieRow
-  title="Top Rated Horror"
-  movies={topRatedMovies}
-  onMovieSelect={openMovie}
-/>
 
     {selectedMovie && (
   <div
