@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
+
+
 function Hero({ movie, onMoreInfo, onWatchTrailer }) {
+  const navigate = useNavigate();
   if (!movie) {
     return null;
   }
@@ -18,15 +23,19 @@ function Hero({ movie, onMoreInfo, onWatchTrailer }) {
         <p className="hero__description">{movie.overview}</p>
 
         <div className="hero__buttons">
-          <button className="hero__button"
-          onClick={() => onWatchTrailer(movie)}
-          >
-            Watch Now</button>
-          <button className="hero__button hero__button--secondary"
-          onClick={() => onMoreInfo(movie)}
-          >
-            More Info
-          </button>
+         <button
+  className="hero__button"
+  onClick={() => navigate(`/movie/${movie.id}`)}
+>
+  Watch Now
+</button>
+
+<button
+  className="hero__button hero__button--secondary"
+  onClick={() => navigate(`/movie/${movie.id}`)}
+>
+  More Info
+</button> 
         </div>
       </div>
     </section>
