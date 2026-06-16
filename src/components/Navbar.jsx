@@ -22,7 +22,7 @@ function Navbar({
     onSubmit={handleSearch}>
   <input
     type="text"
-    placeholder="Search Nocturne..."
+    placeholder="Search..."
     className="navbar__search-input"
     value={searchQuery}
     onChange={(event) => setSearchQuery(event.target.value)}
@@ -39,10 +39,6 @@ function Navbar({
   Home
 </NavLink>
   </li>
-
-  <li>Movies</li>
-
-  <li>Series</li>
 
   <li>
    <NavLink

@@ -10,6 +10,12 @@
   font-family: Arial, sans-serif;
 }
 
+.page {
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 h1 {
   font-size: 4rem;
   margin-bottom: 16px;
@@ -238,6 +244,7 @@ p {
   padding: 48px;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .movie-row__title {
@@ -352,6 +359,8 @@ p {
 
 .movie-details__info {
   padding-top: 96px;
+   width: 100%;
+  min-width: 0;
 }
 
 .movie-details__info h1 {
@@ -464,47 +473,45 @@ p {
   font-size: 0.9rem;
 }
 
-/*Responsive Styles */
-
-@media (max-width: 600px) {
-  .modal__body {
-    flex-direction: column;
-  }
-
-  .modal__poster {
-    width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
-  }
+.movie-details__back-link {
+  color: #b497ff;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 24px;
 }
+
+.movie-details__back-link:hover {
+  text-shadow:
+    0 0 8px rgba(180,151,255,.7);
+}
+
+/*Responsive Styles */
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 16px 20px;
-    gap: 12px;
+    padding: 14px 16px;
+    gap: 10px;
   }
 
   .navbar__links {
-    display: none;
+    display: flex;
+    gap: 12px;
+    font-size: 0.85rem;
   }
 
   .navbar__search {
-    justify-content: flex-end;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
   }
 
   .navbar__search-input {
-    max-width: 160px;
-    padding: 10px 14px;
-  }
-
-  .navbar__logo {
-    font-size: 1rem;
-    letter-spacing: 2px;
-  }
-
-  .navbar__logo-img {
-    width: 28px;
-    height: 28px;
+    width: 100%;
+    max-width: 260px;
   }
 }
 
@@ -529,50 +536,119 @@ p {
   }
 }
 
-@media (max-width: 768px) {
-
-  .modal {
-    align-items: flex-start;
-    padding: 16px;
-    overflow-y: auto;
+@media (max-width: 480px) {
+  .movie-details__content {
+    flex-direction: column;
+    align-items: center;
+    margin: -80px auto 0;
+    padding: 0 20px;
   }
 
-  .modal__body {
+  .movie-details__poster {
+    width: 220px;
+    height: 330px;
+  }
+
+  .movie-details__info {
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  .movie-details__info h1 {
+    font-size: clamp(1.8rem, 10vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .movie-details__meta,
+  .movie-details__genres {
+    justify-content: center;
+  }
+
+  .movie-details__trailer,
+  .movie-details__credits {
+    max-width: 100%;
+  }
+
+  .navbar__links {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-details__trailer-section {
+    width: 100%;
+  }
+
+  .movie-details__trailer {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .movie-details__trailer iframe {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navbar__search {
+    order: 3;
+    flex: 0 0 100%;
+    width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  }
+
+  .navbar__search-input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  }
+
+  .movie-details__content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
     flex-direction: column;
     align-items: center;
   }
 
-  .modal__poster {
-    width: 240px;
+  .movie-details__info {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .movie-details__trailer-section {
+    width: 100%;
     max-width: 100%;
   }
 
-  .modal__details {
+  .movie-details__trailer {
     width: 100%;
-    text-align: center;
-  }
-
-  .modal__actions,
-  .modal__genres,
-  .modal__meta {
-    justify-content: center;
-  }
-
-  .modal__actions {
-    justify-content: center;
-  }
-
-  .modal__genres {
-    justify-content: center;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
- .modal__content {
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    padding: 24px;
-    margin: 24px 0;
+@media (max-width: 480px) {
+  .navbar__search {
+    flex: 0 0 100%;
+    padding: 0 22px;
+    box-sizing: border-box;
   }
+
+  .navbar__search-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
 
  

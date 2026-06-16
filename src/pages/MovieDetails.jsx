@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieDetails, getMovieVideos, getMovieCredits, } from "../services/tmdb";
@@ -124,6 +125,8 @@ setCredits(creditData);
     {isFavorite(movie) ? "☽ In My List" : "☽ Add to My List"}
   </button>
 
+  
+
   {credits && (
   <section className="movie-details__credits">
     <h2>Cast & Crew</h2>
@@ -146,6 +149,14 @@ setCredits(creditData);
         </div>
       ))}
     </div>
+
+    <Link
+  to="/"
+  className="movie-details__back-link"
+>
+  ← Back to Home
+</Link>
+
   </section>
 )}
 
