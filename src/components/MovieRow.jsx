@@ -13,15 +13,13 @@ function MovieRow({ title, movies, onMovieSelect }) {
       <div className="movie-row__list">
         {movies.map((movie) => {
             return(
-             <MovieCard
+          <MovieCard
   key={movie.id}
+  id={movie.id}
   title={movie.title}
   year={movie.release_date?.slice(0, 4)}
   poster={movie.poster_path}
-  onClick={() => {
-    onMovieSelect(movie);
-  }}
-/> 
+/>   
             )
           })}
           

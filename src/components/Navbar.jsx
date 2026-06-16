@@ -1,4 +1,5 @@
 import logo from "../assets/mothman-logo-main.png";
+import { NavLink } from "react-router-dom";
 
 function Navbar({ 
    searchQuery,
@@ -27,16 +28,35 @@ function Navbar({
     onChange={(event) => setSearchQuery(event.target.value)}
   />
 </form>
-      <ul className="navbar__links">
-        <li>Home</li>
-        <li>Movies</li>
-        <li>Series</li>
-        <li>
+   <ul className="navbar__links">
+  <li>
+    <NavLink
+  to="/"
+  className={({ isActive }) =>
+    isActive ? "navbar__link active" : "navbar__link"
+  }
+>
+  Home
+</NavLink>
+  </li>
+
+  <li>Movies</li>
+
+  <li>Series</li>
+
+  <li>
+   <NavLink
+  to="/my-list"
+  className={({ isActive }) =>
+    isActive ? "navbar__link active" : "navbar__link"
+  }
+>
   {favoriteCount > 0
     ? `My List (${favoriteCount})`
     : "My List"}
-</li>
-      </ul>
+</NavLink> 
+  </li>
+</ul>   
     </nav>
   );
 }

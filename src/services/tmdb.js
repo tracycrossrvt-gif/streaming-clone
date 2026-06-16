@@ -138,4 +138,12 @@ export async function getFoundFootageMovies() {
   );
 }
 
+export async function getMovieCredits(movieId) {
+  const response = await fetch(
+    `${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`
+  );
 
+  const data = await response.json();
+
+  return data;
+}

@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import MyList from "./pages/MyList";
+import MovieDetails from "./pages/MovieDetails";
 
 import { useEffect, useState, useRef, } from "react";
 import "./App.css";
@@ -22,6 +23,7 @@ import {
   getMovieVideos,
   getMovieDetails,
 } from "./services/tmdb";
+
 
 function App() {
   const [featuredMovie, setFeaturedMovie] = useState(null);
@@ -170,10 +172,6 @@ async function watchMovie(movie) {
   await handleWatchTrailer(movie);
 }
 
-function closeModal() {
-  setSelectedMovie(null);
-  setTrailerKey(null);
-}
 
 async function openMovie(movie) {
   setSelectedMovie(movie);
@@ -227,131 +225,29 @@ return (
     />
   }
 />
-  {/* <Route path="/my-list" element={<MyList />} /> */}
-</Routes>
+  <Route
+  path="/my-list"
+  element={
+    <MyList
+      favorites={favorites}
+      openMovie={openMovie}
+    />
+  }
+/>
 
-
-    {selectedMovie && (
-  <div
-  className="modal"
-  onClick={closeModal}
->
-   <div
-  className="modal__content"
-  onClick={(event) => event.stopPropagation()}
->
-      <button
-        className="modal__close"
-       onClick={closeModal} 
-      >
-        ×
-      </button>
-
-       {selectedMovie.backdrop_path && (
-  <div
-    className="modal__backdrop"
-    style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(15, 15, 20, 0.25), #171720), url(https://image.tmdb.org/t/p/original${selectedMovie.backdrop_path})`,
-    }}
-  />
-)} 
-
-      <div className="modal__body">
-        <img
-          src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
-          alt={selectedMovie.title}
-          className="modal__poster"
-        />
-
-        <div className="modal__details">
-          <h2>{selectedMovie.title}</h2>
-          {isMovieLoading && (
-  <p className="modal__loading">
-    Summoning forbidden knowledge...
-  </p>
-)}
-         {movieDetails?.tagline && (
-  <p className="modal__tagline">
-    “{movieDetails.tagline}”
-  </p>
-)} 
-
-        {trailerKey && (
-  <div className="modal__trailer">
-    <iframe
-      src={`https://www.youtube.com/embed/${trailerKey}`}
-      title="Movie Trailer"
-      allowFullScreen
-    ></iframe>
-  </div>
-)}
-
-{isTrailerLoading && (
-  <p className="modal__trailer-loading">
-    Summoning trailer...
-  </p>
-)}
-
-{trailerError && (
-  <p className="modal__error">
-    {trailerError}
-  </p>
-)}
-
-    <div className="modal__actions">
-  <button
-    className="modal__favorite-btn"
-    onClick={() => {
-      if (isFavorite(selectedMovie)) {
-        removeFromFavorites(selectedMovie);
-      } else {
-        addToFavorites(selectedMovie);
-      }
-    }}
-  >
-    {isFavorite(selectedMovie) ? "☽ In My List" : "☽ Add to My List"}
-  </button>
-
-  <button
-    className="modal__trailer-btn"
-    onClick={() => handleWatchTrailer(selectedMovie)}
-  >
-    ▶ Watch Trailer
-  </button>
-</div>     
-
-    <div className="modal__meta">
-  <span>⭐ {selectedMovie.vote_average.toFixed(1)}</span>
-
-  {selectedMovie.release_date && (
-    <span>{selectedMovie.release_date.slice(0, 4)}</span>
-  )}
-
-  {movieDetails?.runtime && (
-    <span>{movieDetails.runtime} min</span>
-  )}
-</div>
-
-
-  {movieDetails?.genres && (
-  <div className="modal__genres">
-    {movieDetails.genres.map((genre) => (
-      <span key={genre.id} className="modal__genre">
-        {genre.name}
-      </span>
-    ))}
-  </div>
-)}
-          <p className="modal__overview">
-            {selectedMovie.overview}
-          </p>
+<Route
+  path="/movie/:id"
+  element={
+    <MovieDetails
+      addToFavorites={addToFavorites}
+      removeFromFavorites={removeFromFavorites}
+      isFavorite={isFavorite}
+    />
+  }
+/>
+</Routes>  
         </div>
-      </div>
-    </div>
-  </div>
 )}
-  </div>
-);
-}
+
 
 export default App;
