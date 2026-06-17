@@ -33,3 +33,5 @@ This project was built to practice API integration, routing, component architect
 - Add genre filters
 - Add authentication
 - Add user watch history
+
+https://streaming-clone-seven.vercel.app/

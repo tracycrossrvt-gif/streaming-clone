@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import MovieRow from "../components/MovieRow";
+import { useEffect, useRef } from "react";
 
 function Home({
   featuredMovie,
@@ -18,6 +19,20 @@ function Home({
   popularMovies,
   topRatedMovies,
 }) {
+
+  const searchResultsRef = useRef(null); 
+  useEffect(() => {
+  if (
+    searchResults.length > 0 &&
+    searchResultsRef.current
+  ) {
+    searchResultsRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}, [searchResults]);
+  
   return (
     <>
       <Hero
@@ -43,11 +58,13 @@ function Home({
       )}
 
       {searchResults.length > 0 && (
+        <div ref={searchResultsRef}>
         <MovieRow
           title={`Search Results for "${searchQuery}"`}
           movies={searchResults}
           onMovieSelect={openMovie}
         />
+        </div>
       )}
 
       <MovieRow title="Trending Horror" movies={trendingMovies} onMovieSelect={openMovie} />
