@@ -79,13 +79,16 @@ function App() {
     setCreatureMovies(creatures);
     setFoundFootageMovies(foundFootage);
 
-    const randomIndex = Math.floor(
-      Math.random() * trending.length
-    );
+    const heroMovies = popular.filter((movie) =>
+  movie.backdrop_path &&
+  movie.overview &&
+  movie.vote_average >= 6
+);
 
-    setFeaturedMovie(trending[randomIndex]);
+const randomIndex = Math.floor(Math.random() * heroMovies.length);
+
+setFeaturedMovie(heroMovies[randomIndex]);
   }
-
   loadMovies();
 }, []); 
 
