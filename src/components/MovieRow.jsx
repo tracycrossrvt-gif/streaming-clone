@@ -8,7 +8,7 @@ function MovieRow({ title, movies, onMovieSelect }) {
   return (
     <section className="movie-row">
    
-      <h2 className="movie-row__title">{title}</h2>
+      {title && <h2 className="movie-row__title">{title}</h2>}
 
       <div className="movie-row__list">
         {movies.map((movie) => {

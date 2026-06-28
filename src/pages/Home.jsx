@@ -26,9 +26,11 @@ function Home({
     searchResults.length > 0 &&
     searchResultsRef.current
   ) {
-    searchResultsRef.current.scrollIntoView({
+    const navHeight = 140;
+
+    window.scrollTo({
+      top: searchResultsRef.current.offsetTop - navHeight,
       behavior: "smooth",
-      block: "start",
     });
   }
 }, [searchResults]);
@@ -37,7 +39,7 @@ function Home({
     <>
 
 {hasSearched && (
-  <section className="search-results-section">
+  <section className="search-results-section" ref={searchResultsRef}>
     <div className="search-results-section__header">
       <h1>Search Results</h1>
 
@@ -51,51 +53,33 @@ function Home({
         No results found for "{searchQuery}"
       </p>
     ) : (
-      <div ref={searchResultsRef}>
+     <div>
         <MovieRow
-          title={`Results for "${searchQuery}"`}
-          movies={searchResults}
-          onMovieSelect={openMovie}
-        />
+  title=""
+  movies={searchResults}
+  onMovieSelect={openMovie}
+/>
+        
       </div>
     )}
   </section>
 )}
 
-{!hasSearched && <Hero movie={featuredMovie} />}
+{!hasSearched && (
+  <Hero
+    movie={featuredMovie}
+    onMoreInfo={openMovie}
+    onWatchTrailer={watchMovie}
+  />
+)}
 
-      <Hero
-  movie={featuredMovie}
-  onMoreInfo={openMovie}
-  onWatchTrailer={watchMovie}
-/>
-
-      {favorites.length > 0 && (
-        <MovieRow title="My List" movies={favorites} onMovieSelect={openMovie} />
-      )}
-
-      {hasSearched && (
-        <button className="search-clear-btn" onClick={clearSearch}>
-          ✕ Clear Search
-        </button>
-      )}
-
-      {hasSearched && searchResults.length === 0 && (
-        <p className="search-empty">
-          No results found for "{searchQuery}"
-        </p>
-      )}
-
-      {searchResults.length > 0 && (
-        <div ref={searchResultsRef}>
-        <MovieRow
-          title={`Search Results for "${searchQuery}"`}
-          movies={searchResults}
-          onMovieSelect={openMovie}
-        />
-        </div>
-      )}
-
+ {!hasSearched && favorites.length > 0 && (
+      <MovieRow
+        title="My List"
+        movies={favorites}
+        onMovieSelect={openMovie}
+      />
+    )}
       <MovieRow title="Trending Horror" movies={trendingMovies} onMovieSelect={openMovie} />
       <MovieRow title="Psychological Horror" movies={psychologicalMovies} onMovieSelect={openMovie} />
       <MovieRow title="Creature Features" movies={creatureMovies} onMovieSelect={openMovie} />
