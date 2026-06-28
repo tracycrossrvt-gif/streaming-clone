@@ -35,6 +35,35 @@ function Home({
   
   return (
     <>
+
+{hasSearched && (
+  <section className="search-results-section">
+    <div className="search-results-section__header">
+      <h1>Search Results</h1>
+
+      <button className="search-clear-btn" onClick={clearSearch}>
+        ✕ Clear Search
+      </button>
+    </div>
+
+    {searchResults.length === 0 ? (
+      <p className="search-empty">
+        No results found for "{searchQuery}"
+      </p>
+    ) : (
+      <div ref={searchResultsRef}>
+        <MovieRow
+          title={`Results for "${searchQuery}"`}
+          movies={searchResults}
+          onMovieSelect={openMovie}
+        />
+      </div>
+    )}
+  </section>
+)}
+
+{!hasSearched && <Hero movie={featuredMovie} />}
+
       <Hero
   movie={featuredMovie}
   onMoreInfo={openMovie}

@@ -497,19 +497,27 @@ p {
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 14px 16px;
-    gap: 10px;
+   flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px; 
+  }
+
+  .navbar__brand {
+    width: 100%;
+    justify-content: center;
   }
 
   .navbar__links {
-    display: flex;
-    gap: 12px;
-    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
   }
 
   .navbar__search {
     order: 3;
     width: 100%;
+    flex: none;
     justify-content: center;
   }
 
@@ -519,7 +527,7 @@ p {
 
   .navbar__search-input {
     width: 100%;
-    max-width: 260px;
+    max-width: 320px;
   }
 }
 
