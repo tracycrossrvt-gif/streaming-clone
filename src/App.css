@@ -200,6 +200,44 @@ p {
   color: #b497ff;
 }
 
+.search-sort {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  color: #f5f1e8;
+}
+
+.search-sort label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #b497ff;
+  letter-spacing: 0.5px;
+}
+
+.search-sort select {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(180, 151, 255, 0.4);
+  background: rgba(20, 20, 28, 0.95);
+  color: #f5f1e8;
+  font-size: 0.95rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 200ms ease;
+}
+
+.search-sort select:hover,
+.search-sort select:focus {
+  border-color: #b497ff;
+  box-shadow: 0 0 12px rgba(180, 151, 255, 0.35);
+}
+
+.search-sort option {
+  background: #171720;
+  color: #f5f1e8;
+}
+
 /* Hero */
 .hero {
   min-height: 100vh;
@@ -721,6 +759,17 @@ p {
   .movie-details-page {
     padding-top: 140px;
   }
+
+  .search-sort {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.search-sort select {
+  width: 100%;
+  max-width: 260px;
+}
 }
 
 
